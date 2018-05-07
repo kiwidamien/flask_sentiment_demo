@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  </head>
+  <body>
+    <h1>Sentiment analyser</h1>
+
+    <div class="review-input">
+      <textarea rows="4" cols="50"
+                id='review_text'
+                onkeydown='updateScore()'
+                placeholder='Please type your review here'></textarea>
+
+      <button id='do_it' onclick='updateScore()'>Submit</button>
+    </div>
+
+    <div class='result'>
+      <p>Sentiment result: <div id="output">?</div></p>
+    </div>
+
+    <div id='smiley'>
+    </div>
+
+    <script type='text/javascript' src="{{url_for('static', filename='js/jquery.js') }}"></script>
+
+    <!-- It is WAY more readable to have your javascript served from a separate file
+         (and we can reuse it too) -->
+    <script type='text/javascript' src="{{url_for('static', filename='js/updateScore.js')}}">
+    </script>
+
+  </body>
+
+</html>

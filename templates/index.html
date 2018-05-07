@@ -1,0 +1,47 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <h1>Sentiment analyser</h1>
+
+    <textarea rows="4" cols="50"
+              id='review_text'
+              onkeydown='updateScore()'
+              placeholder='Please type your review here'></textarea>
+
+    <button id='do_it' onclick='updateScore()'>Submit</button>
+
+    <p>Sentiment result: <div id="output">?</div></p>
+
+    <script type='text/javascript' src="{{url_for('static', filename='js/jquery.js') }}"></script>
+
+    <script>
+    function updateScore(){
+      const theReview = document.getElementById('review_text').value;
+      const outputElement = document.getElementById('output');
+      if (theReview.length < 15) {
+          outputElement.textContent = 'Need more text to provide review';
+          return;
+      }
+
+      $.ajax({
+        type: 'POST',
+        contentType: "application/json; charset=utf-8",
+        url: '/sentiment_score',
+        async: true,
+        data: JSON.stringify({
+          review: theReview
+        }),
+        success: (response) => {
+          outputElement.textContent = response.score;
+        },
+        error: (response) => {
+          outputElement.textContent = 'INVALID';
+        }
+      })
+    }
+    </script>
+
+  </body>
+
+</html>

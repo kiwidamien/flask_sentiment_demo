@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+  </head>
+  <body>
+    <div class='smile'>
+    </div>
+  </body>
+
+  <script type="text/javascript">
+
+  function smile(rating) {
+    const circles = [
+      {cx: 250, cy: 250, rx: 250, ry:250, fill: 'yellow'},
+      {cx: 140, cy: 130, rx: 45,  ry: 45, fill: 'black'},
+      {cx: 360, cy: 130, rx: 45,  ry: 45, fill: 'black'}
+    ];
+
+    const height = 350 - 180*(rating - 0.5);
+
+    let controlPoints = [
+      [100,height],
+      [250,350],
+      [400,height]
+    ];
+
+    if (rating < 0.5) {
+      controlPoints = [...controlPoints,
+                       [250, 380],
+                       [100, height]
+                     ];
+    }
+    const svgElement = d3.selectAll('.smile')
+                         .append('svg')
+                         .attrs({
+                            width: 500,
+                            height: 500
+                          });
+
+    const lineGenerator = d3.line()
+                            .curve(d3.curveCardinal);
+    const pathData = lineGenerator(controlPoints);
+
+    svgElement.selectAll('ellipse')
+              .data(circles)
+              .enter()
+              .append('ellipse')
+              .attrs( d => {
+                return {
+                  cx: d.cx,
+                  cy: d.cy,
+                  rx: d.rx,
+                  ry: d.ry
+                }
+              })
+              .style('fill', (d) => d.fill);
+
+    
+    svgElement.append('path')
+              .attr('d', pathData)
+              .attr('stroke-width', 6)
+              .attr('stroke', 'black');
+  }
+
+  smile(1.0);
+  </script>
+</html>

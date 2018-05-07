@@ -16,6 +16,7 @@ function updateScore(){
     }),
     success: (response) => {
       outputElement.textContent = response.score;
+      smile(response.score);
     },
     error: (response) => {
       outputElement.textContent = 'INVALID';
